@@ -4,7 +4,7 @@ import joblib
 app = Flask(__name__)
 model = joblib.load("best_model_xgb.pkl")
 
-# Define feature names here if not loading from a file
+# Define feature names
 feature_names = [
     'clump_thickness', 'uniformity_of_cell_size', 'uniformity_of_cell_shape',
     'marginal_adhesion', 'single_epithelial_cell_size', 'bare_nuclei',
@@ -26,7 +26,6 @@ def predict():
         return render_template('index.html', feature_names=feature_names, 
                                error="All features must be provided and within the range 0-10.")
     
-    # Assuming a single row of features
     prediction = model.predict([features])
     
     # Map prediction to actual value
