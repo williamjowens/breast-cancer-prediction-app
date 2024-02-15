@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Condition Predictor</title>
+    <style>
+        :root {
+            --main-bg-color: #e9f5f9;
+            --container-bg-color: #ffffff;
+            --button-bg-color: #008cba;
+            --button-hover-bg-color: #005f6b;
+            --text-color: #333;
+            --title-color: #005f6b;
+            --prediction-benign-bg-color: #dff0d8;
+            --prediction-benign-text-color: #3c763d;
+            --prediction-malignant-bg-color: #f2dede;
+            --prediction-malignant-text-color: #a94442;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--main-bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 80%;
+            max-width: 700px;
+            background-color: var(--container-bg-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+        h2 {
+            color: var(--title-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+            grid-gap: 15px; /* Space between grid items */
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px; /* Space below the label */
+        }
+        input[type=number] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-footer {
+            grid-column: 1 / -1; /* Button spans all columns */
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--button-bg-color);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: var(--button-hover-bg-color);
+        }
+        .prediction {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--prediction-benign-bg-color); /* Default to benign */
+            color: var(--prediction-benign-text-color);
+        }
+        .prediction-malignant {
+            background-color: var(--prediction-malignant-bg-color);
+            color: var(--prediction-malignant-text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Breast Cancer Condition Predictor</h2>
+        <p>In the spaces below, please enter positive whole integers in the range of 1 to 10.</p>
+        <form action="/predict" method="post">
+            {% for feature in feature_names %}
+            <div class="input-group">
+                <label for="{{ feature }}">{{ feature.replace('_', ' ') | title }}</label>
+                <input type="number" id="{{ feature }}" name="{{ feature }}" min="1" max="10" required>
+            </div>
+            {% endfor %}
+            <div class="form-footer">
+                <button type="submit">Predict</button>
+            </div>
+        </form>
+        {% if prediction_text %}
+        <div class="prediction {% if 'Malignant' in prediction_text %}prediction-malignant{% else %}prediction-benign{% endif %}">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
